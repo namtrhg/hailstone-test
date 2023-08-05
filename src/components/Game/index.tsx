@@ -74,9 +74,6 @@ const Game = () => {
     setIsModalOpen(false);
     setIsWinnerModalOpen(false);
     setIsTieModalOpen(false);
-    localStorage.setItem("player1Score", "0");
-    localStorage.setItem("player2Score", "0");
-    localStorage.setItem("ties", "0");
   };
 
   const handleClick = (index: number) => {
