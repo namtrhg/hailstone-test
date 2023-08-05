@@ -2,6 +2,11 @@
 
 This is a simple Tic-Tac-Toe game implemented in React.
 
+## Questions?
+
+- How much time did you spend on the coding challenge?: About 8 hours.
+- What would you improve if you could spend more time on this coding challenge?: I would make the app responsive and write more unit tests.
+
 ## How to Play
 
 1. Clone this repository to your local machine.
