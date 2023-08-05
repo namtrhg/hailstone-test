@@ -63,6 +63,7 @@ const Board = (props: BoardProps) => {
     player2Score,
     ties,
   } = props;
+
   const renderSquare = (index: number, isWinningSquare: boolean) => {
     return (
       <Square
@@ -77,11 +78,13 @@ const Board = (props: BoardProps) => {
 
   return (
     <div className="grid grid-cols-3 gap-5" data-testid="game-board">
-      {Array.from({ length: 9 }).map((_, index) => (
-        <div key={index} data-testid="game-square">
-          {renderSquare(index, winningSquares && winningSquares[index])}
-        </div>
-      ))}
+      {Array.from({ length: 9 }).map((_, index) => {
+        return (
+          <div key={index} data-testid="game-square">
+            {renderSquare(index, winningSquares && winningSquares[index])}
+          </div>
+        );
+      })}
       <div className="bg-success rounded-xl h-[72px] flex flex-col justify-center items-center">
         <p>X (P1)</p>
         <p className="font-bold">{player1Score}</p>

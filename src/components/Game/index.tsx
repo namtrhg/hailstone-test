@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Board, { SquareValue } from "../Board/Board";
+import Board, { SquareValue } from "../Board";
 import Button from "../Button";
 import Modal from "../Modal";
 import classNames from "classnames";
@@ -9,18 +9,18 @@ import { ReactComponent as XGrayIcon } from "../svg/x-gray.svg";
 import { ReactComponent as OGrayIcon } from "../svg/o-gray.svg";
 import { ReactComponent as Restartcon } from "../svg/restart.svg";
 
-const calculateWinner = (squares: SquareValue[]): SquareValue => {
-  const winPatterns: number[][] = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+export const winPatterns: number[][] = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
 
+const calculateWinner = (squares: SquareValue[]): SquareValue => {
   for (const pattern of winPatterns) {
     const [a, b, c] = pattern;
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
@@ -94,7 +94,20 @@ const Game = () => {
     squares: SquareValue[],
     winner: SquareValue
   ): boolean[] => {
-    return squares.map((square) => square === winner);
+    const winningSquares = Array(9).fill(false); // Initialize with false values for all squares
+  
+    // Check each winPattern and mark the corresponding squares as true if they match the winner
+    for (const pattern of winPatterns) {
+      const [a, b, c] = pattern;
+      if (squares[a] === winner && squares[b] === winner && squares[c] === winner) {
+        winningSquares[a] = true;
+        winningSquares[b] = true;
+        winningSquares[c] = true;
+        break; // Break out of the loop once we find a winning pattern
+      }
+    }
+  
+    return winningSquares;
   };
 
   const current = history[stepNumber];
@@ -181,9 +194,7 @@ const Game = () => {
               </Button>
               <div className="h-full w-full absolute top-[8%] rounded-xl bg-secondary/50 z-0" />
             </div>
-            <div
-              className="mt-8 h-[52px] w-[139px] relative"
-            >
+            <div className="mt-8 h-[52px] w-[139px] relative">
               <Button
                 color="warning"
                 className="h-[52px] w-[139px] text-primary font-bold tracking-wider z-10"

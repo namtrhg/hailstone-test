@@ -1,6 +1,6 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import Game from "./components/Game";
-import Board from "./components/Board/Board";
+import Board from "./components/Board";
 
 interface LocalStorageMock extends Storage {
   // Add the missing properties from the Storage interface
