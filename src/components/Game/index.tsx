@@ -94,16 +94,15 @@ const Game = () => {
     squares: SquareValue[],
     winner: SquareValue
   ): boolean[] => {
-    const winningSquares = Array(9).fill(false); // Initialize with false values for all squares
+    const winningSquares = Array(9).fill(false);
   
-    // Check each winPattern and mark the corresponding squares as true if they match the winner
     for (const pattern of winPatterns) {
       const [a, b, c] = pattern;
       if (squares[a] === winner && squares[b] === winner && squares[c] === winner) {
         winningSquares[a] = true;
         winningSquares[b] = true;
         winningSquares[c] = true;
-        break; // Break out of the loop once we find a winning pattern
+        break;
       }
     }
   
