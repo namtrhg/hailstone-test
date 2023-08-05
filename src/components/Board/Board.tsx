@@ -17,15 +17,11 @@ const Square = (props: SquareProps) => {
   const getValue = () => {
     if (value === "X")
       return (
-        <XIcon
-          className={isWinningSquare ? "text-primary" : "text-[#31C3BD]"}
-        />
+        <XIcon className={isWinningSquare ? "text-primary" : "text-success"} />
       );
     if (value === "O")
       return (
-        <OIcon
-          className={isWinningSquare ? "text-primary" : "text-[#F2B137]"}
-        />
+        <OIcon className={isWinningSquare ? "text-primary" : "text-warning"} />
       );
     return null;
   };
@@ -35,8 +31,8 @@ const Square = (props: SquareProps) => {
       <Button
         className={classNames(
           "w-[140px] h-[134px] !bg-[#1F3641] text-xl font-bold rounded-xl flex justify-center items-center z-10",
-          { "!bg-[#F2B137]": isWinningSquare && winner === "O" },
-          { "!bg-[#31C3BD]": isWinningSquare && winner === "X" }
+          { "!bg-warning": isWinningSquare && winner === "O" },
+          { "!bg-success": isWinningSquare && winner === "X" }
         )}
         onClick={onClick}
       >
@@ -52,10 +48,21 @@ interface BoardProps {
   onClick: (index: number) => void;
   winningSquares: any;
   winner: SquareValue;
+  player1Score: number;
+  player2Score: number;
+  ties: number;
 }
 
 const Board = (props: BoardProps) => {
-  const { squares, onClick, winningSquares, winner } = props;
+  const {
+    squares,
+    onClick,
+    winningSquares,
+    winner,
+    player1Score,
+    player2Score,
+    ties,
+  } = props;
   const renderSquare = (index: number, isWinningSquare: boolean) => {
     return (
       <Square
@@ -75,6 +82,18 @@ const Board = (props: BoardProps) => {
           {renderSquare(index, winningSquares && winningSquares[index])}
         </div>
       ))}
+      <div className="bg-success rounded-xl h-[72px] flex flex-col justify-center items-center">
+        <p>X (P1)</p>
+        <p className="font-bold">{player1Score}</p>
+      </div>
+      <div className={classNames("rounded-xl h-[72px] text-primary flex flex-col justify-center items-center", ties ? 'bg-secondary' : 'bg-[#1F3641]')}>
+        <p>TIES</p>
+        <p className="font-bold">{ties}</p>
+      </div>
+      <div className="bg-warning rounded-xl h-[72px] flex flex-col justify-center items-center">
+        <p>O (P2)</p>
+        <p className="font-bold">{player2Score}</p>
+      </div>
     </div>
   );
 };

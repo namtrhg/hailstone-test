@@ -41,6 +41,16 @@ const Game = () => {
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
   const [isTieModalOpen, setIsTieModalOpen] = useState(false);
 
+  const [player1Score, setPlayer1Score] = useState<number>(
+    parseInt(localStorage.getItem("player1Score") || "0")
+  );
+  const [player2Score, setPlayer2Score] = useState<number>(
+    parseInt(localStorage.getItem("player2Score") || "0")
+  );
+  const [ties, setTies] = useState<number>(
+    parseInt(localStorage.getItem("ties") || "0")
+  );
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -63,6 +73,10 @@ const Game = () => {
     setXIsNext(true);
     setIsModalOpen(false);
     setIsWinnerModalOpen(false);
+    setIsTieModalOpen(false);
+    localStorage.setItem("player1Score", "0");
+    localStorage.setItem("player2Score", "0");
+    localStorage.setItem("ties", "0");
   };
 
   const handleClick = (index: number) => {
@@ -90,23 +104,38 @@ const Game = () => {
   const winner = calculateWinner(current);
   const winningSquares = winner ? findWinningSquares(current, winner) : null;
 
-  useEffect(() => {
-    if (winner) setIsWinnerModalOpen(true);
-    if (history.length === 10) setIsTieModalOpen(true);
-  }, [history.length, winner]);
-
   const status = xIsNext ? (
     <XGrayIcon className="h-5 w-5" />
   ) : (
     <OGrayIcon className="h-5 w-5" />
   );
 
+  useEffect(() => {
+    if (winner) {
+      setIsWinnerModalOpen(true);
+
+      if (winner === "X") {
+        setPlayer1Score((prevScore) => prevScore + 1);
+        localStorage.setItem("player1Score", (player1Score + 1).toString());
+      } else if (winner === "O") {
+        setPlayer2Score((prevScore) => prevScore + 1);
+        localStorage.setItem("player2Score", (player2Score + 1).toString());
+      }
+    }
+    if (history.length === 10) {
+      setIsTieModalOpen(true);
+
+      setTies((prevTies) => prevTies + 1);
+      localStorage.setItem("ties", (ties + 1).toString());
+    }
+  }, [history.length, winner]);
+
   return (
     <div>
       <div className="mb-5 flex justify-between items-center w-full">
         <div className="flex justify-center items-center space-x-2.5">
-          <XIcon className="h-8 w-8 text-[#31C3BD]" />
-          <OIcon className="h-8 w-8 text-[#F2B137]" />
+          <XIcon className="h-8 w-8 text-success" />
+          <OIcon className="h-8 w-8 text-warning" />
         </div>
         <div>
           <div className="bg-primary w-[140px] h-[52px] flex justify-center items-center shadow-md relative rounded-xl">
@@ -133,6 +162,9 @@ const Game = () => {
           onClick={handleClick}
           winningSquares={winningSquares}
           winner={winner}
+          player1Score={player1Score}
+          player2Score={player2Score}
+          ties={ties}
         />
       </div>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
@@ -167,7 +199,7 @@ const Game = () => {
       <Modal isOpen={isWinnerModalOpen} onClose={handleCloseWinnerModal}>
         <div className="flex flex-col justify-center items-center h-full">
           <p className="text-[#A8BFC9] font-bold text-sm tracking-wide mb-4">
-            PLAYER {winner === "O" ? 1 : 2} WINS!
+            PLAYER {winner === "X" ? 1 : 2} WINS!
           </p>
           <h1
             className={classNames(
@@ -176,9 +208,9 @@ const Game = () => {
             )}
           >
             {winner === "O" ? (
-              <OIcon className="h-16 w-16 text-[#F2B137]" />
+              <OIcon className="h-16 w-16 text-warning" />
             ) : (
-              <XIcon className="h-16 w-16 text-[#31C3BD]" />
+              <XIcon className="h-16 w-16 text-success" />
             )}
             <span>TAKES THE ROUND</span>
           </h1>
