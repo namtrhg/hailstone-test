@@ -76,9 +76,9 @@ const Board = (props: BoardProps) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-5">
+    <div className="grid grid-cols-3 gap-5" data-testid="game-board">
       {Array.from({ length: 9 }).map((_, index) => (
-        <div key={index}>
+        <div key={index} data-testid="game-square">
           {renderSquare(index, winningSquares && winningSquares[index])}
         </div>
       ))}
@@ -86,7 +86,12 @@ const Board = (props: BoardProps) => {
         <p>X (P1)</p>
         <p className="font-bold">{player1Score}</p>
       </div>
-      <div className={classNames("rounded-xl h-[72px] text-primary flex flex-col justify-center items-center", ties ? 'bg-secondary' : 'bg-[#1F3641]')}>
+      <div
+        className={classNames(
+          "rounded-xl h-[72px] text-primary flex flex-col justify-center items-center",
+          ties ? "bg-secondary" : "bg-[#1F3641]"
+        )}
+      >
         <p>TIES</p>
         <p className="font-bold">{ties}</p>
       </div>

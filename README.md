@@ -22,6 +22,10 @@ This is a simple Tic-Tac-Toe game implemented in React.
 - Modals are used to handle game restarts, winner announcements, and ties.
 - The game highlights the winning squares when a player wins.
 
+## Testing
+
+- To run the tests for the Tic-Tac-Toe game, use the command: yarn test.
+
 ## Technologies Used
 
 - React

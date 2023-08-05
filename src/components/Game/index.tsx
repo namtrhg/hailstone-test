@@ -150,6 +150,7 @@ const Game = () => {
           <Button
             className="bg-secondary w-[52px] h-[48px] z-10"
             onClick={handleOpenModal}
+            data-testid="restart-button"
           >
             <Restartcon />
           </Button>
@@ -183,7 +184,9 @@ const Game = () => {
               </Button>
               <div className="h-full w-full absolute top-[8%] rounded-xl bg-secondary/50 z-0" />
             </div>
-            <div className="mt-8 h-[52px] w-[139px] relative">
+            <div
+              className="mt-8 h-[52px] w-[139px] relative"
+            >
               <Button
                 color="warning"
                 className="h-[52px] w-[139px] text-primary font-bold tracking-wider z-10"
