@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Board, { SquareValue } from "../Board/Board";
 import Button from "../Button";
 import Modal from "../Modal";
 import classNames from "classnames";
+import { ReactComponent as XIcon } from "../svg/x.svg";
+import { ReactComponent as OIcon } from "../svg/o.svg";
+import { ReactComponent as XGrayIcon } from "../svg/x-gray.svg";
+import { ReactComponent as OGrayIcon } from "../svg/o-gray.svg";
+import { ReactComponent as Restartcon } from "../svg/restart.svg";
 
 const calculateWinner = (squares: SquareValue[]): SquareValue => {
   const winPatterns: number[][] = [
@@ -26,7 +31,7 @@ const calculateWinner = (squares: SquareValue[]): SquareValue => {
   return null;
 };
 
-const Game: React.FC = () => {
+const Game = () => {
   const [history, setHistory] = useState<SquareValue[][]>([
     Array(9).fill(null),
   ]);
@@ -74,8 +79,16 @@ const Game: React.FC = () => {
     setXIsNext(!xIsNext);
   };
 
+  const findWinningSquares = (
+    squares: SquareValue[],
+    winner: SquareValue
+  ): boolean[] => {
+    return squares.map((square) => square === winner);
+  };
+
   const current = history[stepNumber];
   const winner = calculateWinner(current);
+  const winningSquares = winner ? findWinningSquares(current, winner) : null;
 
   useEffect(() => {
     if (winner) setIsWinnerModalOpen(true);
@@ -83,17 +96,17 @@ const Game: React.FC = () => {
   }, [history.length, winner]);
 
   const status = xIsNext ? (
-    <img className="h-5 w-5" src="/svg/x-gray.svg" alt="x" />
+    <XGrayIcon className="h-5 w-5" />
   ) : (
-    <img className="h-5 w-5" src="/svg/o-gray.svg" alt="o" />
+    <OGrayIcon className="h-5 w-5" />
   );
 
   return (
     <div>
       <div className="mb-5 flex justify-between items-center w-full">
         <div className="flex justify-center items-center space-x-2.5">
-          <img className="h-8 w-8" src="/svg/x.svg" alt="x" />
-          <img className="h-8 w-8" src="/svg/o.svg" alt="o" />
+          <XIcon className="h-8 w-8 text-[#31C3BD]" />
+          <OIcon className="h-8 w-8 text-[#F2B137]" />
         </div>
         <div>
           <div className="bg-primary w-[140px] h-[52px] flex justify-center items-center shadow-md relative rounded-xl">
@@ -109,13 +122,18 @@ const Game: React.FC = () => {
             className="bg-secondary w-[52px] h-[48px] z-10"
             onClick={handleOpenModal}
           >
-            <img src="/svg/restart.svg" alt="restart" />
+            <Restartcon />
           </Button>
           <div className="h-full w-full absolute top-[2%] bg-opacity-40 rounded-xl z-0 bg-secondary" />
         </div>
       </div>
       <div>
-        <Board squares={current} onClick={handleClick} />
+        <Board
+          squares={current}
+          onClick={handleClick}
+          winningSquares={winningSquares}
+          winner={winner}
+        />
       </div>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <div className="flex flex-col justify-center items-center h-full">
@@ -157,11 +175,11 @@ const Game: React.FC = () => {
               winner === "O" ? "text-warning" : "text-success"
             )}
           >
-            <img
-              className="h-16 w-16"
-              src={`/svg/${winner}.svg`}
-              alt="winner"
-            />{" "}
+            {winner === "O" ? (
+              <OIcon className="h-16 w-16 text-[#F2B137]" />
+            ) : (
+              <XIcon className="h-16 w-16 text-[#31C3BD]" />
+            )}
             <span>TAKES THE ROUND</span>
           </h1>
           <div className="flex space-x-4">
