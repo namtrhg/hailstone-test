@@ -3,7 +3,6 @@ import Game from "./components/Game";
 import Board from "./components/Board";
 
 interface LocalStorageMock extends Storage {
-  // Add the missing properties from the Storage interface
   length: number;
   clear: () => void;
   key: (index: number) => string | null;
@@ -16,7 +15,6 @@ const localStorageMock: LocalStorageMock = {
   clear: jest.fn(),
   key: jest.fn(),
   removeItem: jest.fn(),
-  // Add the length property, it can be set to any appropriate number.
   length: 0,
 };
 
