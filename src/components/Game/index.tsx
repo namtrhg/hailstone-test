@@ -131,7 +131,7 @@ const Game = () => {
         localStorage.setItem("player2Score", (player2Score + 1).toString());
       }
     }
-    if (history.length === 10) {
+    if (history.length === 10 && !winner) {
       setIsTieModalOpen(true);
 
       setTies((prevTies) => prevTies + 1);
